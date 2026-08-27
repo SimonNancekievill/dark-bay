@@ -88,3 +88,66 @@ export const auctionsData = [
     endDate: new Date('2026-09-25T10:00:00.000Z'),
   },
 ];
+
+export const offersData = [
+  {
+    auctionIndex: 0,
+    bidder: 'collector_max',
+    offerPrice: 3600,
+    createdAt: new Date('2026-08-20T10:15:00.000Z'),
+  },
+  {
+    auctionIndex: 0,
+    bidder: 'watchfan_22',
+    offerPrice: 3750,
+    createdAt: new Date('2026-08-21T09:30:00.000Z'),
+  },
+  {
+    auctionIndex: 1,
+    bidder: 'pcgamer_lena',
+    offerPrice: 1850,
+    createdAt: new Date('2026-08-22T14:00:00.000Z'),
+  },
+  {
+    auctionIndex: 1,
+    bidder: 'hardwarehunter',
+    offerPrice: 1950,
+    createdAt: new Date('2026-08-23T16:45:00.000Z'),
+  },
+  {
+    auctionIndex: 2,
+    bidder: 'interiorista_ana',
+    offerPrice: 475,
+    createdAt: new Date('2026-08-23T11:00:00.000Z'),
+  },
+  {
+    auctionIndex: 3,
+    bidder: 'riffmaster99',
+    offerPrice: 950,
+    createdAt: new Date('2026-08-20T08:20:00.000Z'),
+  },
+  {
+    auctionIndex: 4,
+    bidder: 'carpetlover_jo',
+    offerPrice: 1250,
+    createdAt: new Date('2026-08-19T13:10:00.000Z'),
+  },
+  {
+    auctionIndex: 5,
+    bidder: 'techseller_ben',
+    offerPrice: 2150,
+    createdAt: new Date('2026-08-24T10:00:00.000Z'),
+  },
+  {
+    auctionIndex: 6,
+    bidder: 'artfan_paul',
+    offerPrice: 320,
+    createdAt: new Date('2026-08-25T15:30:00.000Z'),
+  },
+  {
+    auctionIndex: 7,
+    bidder: 'trailrider_kim',
+    offerPrice: 630,
+    createdAt: new Date('2026-08-18T17:00:00.000Z'),
+  },
+];
