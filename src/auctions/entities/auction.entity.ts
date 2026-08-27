@@ -1,9 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('auctions')
 export class Auction {
@@ -26,8 +21,8 @@ export class Auction {
   currentPrice!: number;
 
   @Column({ type: 'datetime' })
-  endDate!: string;
-
-  @CreateDateColumn()
   createdAt!: Date;
+
+  @Column({ type: 'datetime' })
+  endDate!: Date;
 }
