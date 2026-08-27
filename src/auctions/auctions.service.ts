@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateAuctionDto } from './dto/create-auction.dto';
-import { UpdateAuctionDto } from './dto/update-auction.dto';
+import { CreateAuctionDto } from './dto/createAuction.dto';
+import { UpdateAuctionDto } from './dto/updateAuction.dto';
 import { Repository } from 'typeorm';
 import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';

@@ -10,8 +10,8 @@ import {
   SerializeOptions,
 } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
-import { CreateAuctionDto } from './dto/create-auction.dto';
-import { UpdateAuctionDto } from './dto/update-auction.dto';
+import { CreateAuctionDto } from './dto/createAuction.dto';
+import { UpdateAuctionDto } from './dto/updateAuction.dto';
 import { AuctionResponseDto } from './dto/auctionResponse.dto';
 
 @Controller('auctions')

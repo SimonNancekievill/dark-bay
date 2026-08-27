@@ -6,6 +6,7 @@ import { OffersModule } from './offers/offers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auction } from './auctions/entities/auction.entity';
 import { Offer } from './offers/entities/offer.entity';
+import 'dotenv/config';
 
 @Module({
   imports: [
