@@ -10,18 +10,33 @@ import {
   SerializeOptions,
 } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
-import { CreateAuctionDto } from './dto/create-auction.dto';
-import { UpdateAuctionDto } from './dto/update-auction.dto';
+import { CreateAuctionDto } from './dto/createAuction.dto';
+import { UpdateAuctionDto } from './dto/updateAuction.dto';
 import { AuctionResponseDto } from './dto/auctionResponse.dto';
+import { OfferResponseDto } from '../offers/dto/offerResponse.dto';
+import { CreateOfferDto } from '../offers/dto/createOffer.dto';
+import { OffersService } from '../offers/offers.service';
 
 @Controller('auctions')
 export class AuctionsController {
-  constructor(private readonly auctionsService: AuctionsService) {}
+  constructor(
+    private readonly auctionsService: AuctionsService,
+    private readonly offersService: OffersService,
+  ) {}
 
   @Post()
   @SerializeOptions({ type: AuctionResponseDto })
   create(@Body() auctionPayload: CreateAuctionDto) {
     return this.auctionsService.create(auctionPayload);
+  }
+
+  @Post(':id')
+  @SerializeOptions({ type: OfferResponseDto })
+  createOffer(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() createOfferDto: CreateOfferDto,
+  ) {
+    return this.offersService.create(id, createOfferDto);
   }
 
   @Get()

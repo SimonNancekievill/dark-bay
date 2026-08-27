@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Offer } from '../../offers/entities/offer.entity';
 
 @Entity('auctions')
 export class Auction {
@@ -25,4 +26,7 @@ export class Auction {
 
   @Column({ type: 'datetime' })
   endDate!: Date;
+
+  @OneToMany(() => Offer, (offer) => offer.auction)
+  offers!: Offer[];
 }

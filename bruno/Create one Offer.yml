@@ -1,15 +1,22 @@
 info:
-  name: Find one Auction
+  name: Create one Offer
   type: http
-  seq: 3
+  seq: 4
 
 http:
-  method: GET
+  method: POST
   url: "{{baseURL}}/auctions/:id"
   params:
     - name: id
-      value: 0d799a69-fe99-4be8-bea7-75851149dfc8
+      value: c0fc871f-2c97-4927-b512-fc7c28796a5b
       type: path
+  body:
+    type: json
+    data: |-
+      {
+        "bidder": "Marco",
+        "offerPrice": 23000
+      }
   auth: inherit
 
 settings:
