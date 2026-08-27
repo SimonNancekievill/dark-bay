@@ -11,7 +11,7 @@ import { Offer } from './offers/entities/offer.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'data/dark-bay.sqlite',
+      database: process.env.DB_FILE!,
       entities: [Auction, Offer],
       synchronize: true,
       logging: false,
