@@ -1,0 +1,27 @@
+info:
+  name: Create one Offer
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseURL}}/auctions/:id"
+  params:
+    - name: id
+      value: c0fc871f-2c97-4927-b512-fc7c28796a5b
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "bidder": "Marco",
+        "offerPrice": 23
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
