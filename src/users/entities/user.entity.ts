@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Offer } from '../../offers/entities/offer.entity';
+import { Auction } from '../../auctions/entities/auction.entity';
 
 @Entity('users')
 export class User {
@@ -15,6 +18,12 @@ export class User {
 
   @Column()
   passwordHash!: string;
+
+  @OneToMany(() => Offer, (offer) => offer.bidder)
+  offers!: Offer[];
+
+  @OneToMany(() => Auction, (auction) => auction.seller.id)
+  auctions!: Auction[];
 
   @CreateDateColumn()
   createdAt!: Date;

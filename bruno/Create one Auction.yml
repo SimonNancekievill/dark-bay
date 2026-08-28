@@ -5,18 +5,19 @@ info:
 
 http:
   method: POST
-  url: '{{baseURL}}/auctions'
+  url: "{{baseURL}}/auctions"
   body:
     type: json
     data: |2-
-        {
-          "title": "Antique Persian Rug",
-          "description": "Hand-woven wool rug, approx. 200x300cm, early 20th century.",
-          "startingPrice": 1200,
-          "endDate": "2026-09-05T14:00:00.000Z",
-          "seller": "rugtraderemma"
+       {
+          "title": "Vintage Rolex Submariner",
+          "description":
+            "1970s Rolex Submariner, great condition, comes with original box.",
+          "startingPrice": 3500,
         }
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN3YWdnZXIiLCJzdWIiOiJkN2JiOTJhMC04YjY3LTQ1OWEtYTIzYS1iYTYwYWZkZTVhN2YiLCJjcmVhdGVkQXQiOiIyMDI2LTA4LTI4VDE1OjM5OjEzLjAwMFoiLCJpYXQiOjE3ODc5MzIyNTksImV4cCI6MTc4NzkzNTg1OX0.XyHyZKKILsqZB0sMowpUkyEEaM7L66m6-ksquGpbMx4
 
 settings:
   encodeUrl: true

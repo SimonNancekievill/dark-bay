@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuctionDto } from './dtos/createAuction.dto';
-import { UpdateAuctionDto } from './dtos/updateAuction.dto';
 import {
   Between,
   LessThan,
@@ -12,6 +11,9 @@ import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginationMetaResponseDto } from '../common/dtos/paginationMetaResponse.dto';
+import { User } from '../users/entities/user.entity';
+
+const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class AuctionsService {
@@ -20,14 +22,16 @@ export class AuctionsService {
     private readonly auctions: Repository<Auction>,
   ) {}
 
-  create(auctionPayload: CreateAuctionDto) {
+  async create(auctionPayload: CreateAuctionDto, userData: User) {
     const createdAt = new Date();
+    const { id } = userData;
     const newAuction = this.auctions.create({
       ...auctionPayload,
       createdAt,
+      seller: { id },
       endDate:
         auctionPayload.endDate ??
-        new Date(createdAt.getTime() + 3 * 24 * 60 * 60 * 1000),
+        new Date(createdAt.getTime() + THREE_DAYS_IN_MS),
     });
     return this.auctions.save(newAuction);
   }
@@ -95,11 +99,7 @@ export class AuctionsService {
     return auction;
   }
 
-  update(id: string, _updateAuctionDto: UpdateAuctionDto) {
-    return `This action updates a #${id} auction`;
-  }
-
-  remove(id: string) {
+  remove(id: string, _user: User) {
     return `This action removes a #${id} auction`;
   }
 }

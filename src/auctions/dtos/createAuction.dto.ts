@@ -16,10 +16,6 @@ export class CreateAuctionDto {
   @IsNotEmpty()
   description!: string;
 
-  @IsString()
-  @IsNotEmpty()
-  seller!: string;
-
   @IsNumber()
   @Min(1)
   startingPrice!: number;

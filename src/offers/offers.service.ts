@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { Offer } from './entities/offer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auction } from '../auctions/entities/auction.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class OffersService {
@@ -18,22 +19,18 @@ export class OffersService {
     @InjectRepository(Auction)
     private readonly auctions: Repository<Auction>,
   ) {}
-  async create(auctionId: string, offerPayload: CreateOfferDto) {
+  async create(auctionId: string, offerPayload: CreateOfferDto, user: User) {
     const auction = await this.auctions.findOneBy({ id: auctionId });
 
     if (!auction) {
       throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
     }
 
-    if (offerPayload.offerPrice < auction.startingPrice) {
+    if (
+      offerPayload.offerPrice < (auction.currentPrice ?? auction.startingPrice)
+    ) {
       throw new ConflictException(
-        `Offer price of ${offerPayload.offerPrice} is less than starting price (${auction.startingPrice})`,
-      );
-    }
-
-    if (offerPayload.offerPrice < auction.currentPrice) {
-      throw new ConflictException(
-        `Offer price of ${offerPayload.offerPrice} is less than current price (${auction.currentPrice})`,
+        `Offer price of ${offerPayload.offerPrice} is less than required price.`,
       );
     }
 
@@ -63,15 +60,11 @@ export class OffersService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} offer`;
   }
 
-  update(id: number, offerPayload: UpdateOfferDto) {
-    return `This action updates a #${id} offer`;
-  }
-
-  remove(id: number) {
+  remove(id: string, _user: User) {
     return `This action removes a #${id} offer`;
   }
 }
