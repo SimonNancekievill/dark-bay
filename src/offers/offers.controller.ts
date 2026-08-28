@@ -1,6 +1,6 @@
 import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OffersService } from './offers.service';
-import { UpdateOfferDto } from './dto/updateOffer.dto';
+import { UpdateOfferDto } from './dtos/updateOffer.dto';
 
 @Controller('offers')
 export class OffersController {

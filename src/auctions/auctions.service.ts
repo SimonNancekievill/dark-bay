@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateAuctionDto } from './dto/createAuction.dto';
-import { UpdateAuctionDto } from './dto/updateAuction.dto';
-import { Repository } from 'typeorm';
+import { CreateAuctionDto } from './dtos/createAuction.dto';
+import { UpdateAuctionDto } from './dtos/updateAuction.dto';
+import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationQueryDto } from '../common/dtos/paginationQueryDto.dto';
 
 @Injectable()
 export class AuctionsService {
@@ -24,8 +25,16 @@ export class AuctionsService {
     return this.auctions.save(newAuction);
   }
 
-  findAll(): Promise<Auction[]> {
-    return this.auctions.find();
+  findAll(pagination: PaginationQueryDto): Promise<Auction[]> {
+    const { status } = pagination;
+    const currentDate = new Date();
+    const statusCommand =
+      status === 'open' ? MoreThanOrEqual(currentDate) : LessThan(currentDate);
+    const whereFilter = status ? { endDate: statusCommand } : {};
+    return this.auctions.find({
+      where: whereFilter,
+      order: { endDate: 'ASC' },
+    });
   }
 
   async findOne(id: string): Promise<Auction> {
