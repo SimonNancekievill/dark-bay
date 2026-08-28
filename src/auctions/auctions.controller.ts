@@ -17,7 +17,8 @@ import { AuctionResponseDto } from './dtos/auctionResponse.dto';
 import { OfferResponseDto } from '../offers/dtos/offerResponse.dto';
 import { CreateOfferDto } from '../offers/dtos/createOffer.dto';
 import { OffersService } from '../offers/offers.service';
-import { PaginationQueryDto } from '../common/dtos/paginationQueryDto.dto';
+import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
+import { PaginatedAuctionsResponseDto } from './dtos/paginatedAuctionsResponse.dto';
 
 @Controller('auctions')
 export class AuctionsController {
@@ -27,7 +28,7 @@ export class AuctionsController {
   ) {}
 
   @Get()
-  @SerializeOptions({ type: AuctionResponseDto })
+  @SerializeOptions({ type: PaginatedAuctionsResponseDto })
   findAll(@Query() pagination: PaginationQueryDto) {
     return this.auctionsService.findAll(pagination);
   }

@@ -8,7 +8,7 @@ http:
   url: "{{baseURL}}/auctions/:id"
   params:
     - name: id
-      value: 0d799a69-fe99-4be8-bea7-75851149dfc8
+      value: 2cb65cf9-b2a8-4a67-a3a0-1b3092c063c0
       type: path
   auth: inherit
 

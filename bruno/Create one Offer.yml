@@ -5,16 +5,16 @@ info:
 
 http:
   method: POST
-  url: "{{baseURL}}/auctions/:id"
+  url: "{{baseURL}}/auctions/:id/offer"
   params:
     - name: id
-      value: c0fc871f-2c97-4927-b512-fc7c28796a5b
+      value: 62b8f736-6fdc-428d-a098-c6baa5e67380
       type: path
   body:
     type: json
     data: |-
       {
-        "bidder": "Marco",
+        "bidder": "Simon",
         "offerPrice": 23000
       }
   auth: inherit

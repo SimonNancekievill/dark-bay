@@ -5,7 +5,30 @@ info:
 
 http:
   method: GET
-  url: "{{baseURL}}/auctions"
+  url: "{{baseURL}}/auctions?limit=4&page=4"
+  params:
+    - name: limit
+      value: "4"
+      type: query
+    - name: page
+      value: "4"
+      type: query
+    - name: max-price
+      value: "1500"
+      type: query
+      disabled: true
+    - name: min-price
+      value: "1000"
+      type: query
+      disabled: true
+    - name: status
+      value: closed
+      type: query
+      disabled: true
+    - name: status
+      value: open
+      type: query
+      disabled: true
   auth: inherit
 
 settings:

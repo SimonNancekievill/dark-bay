@@ -1,10 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuctionDto } from './dtos/createAuction.dto';
 import { UpdateAuctionDto } from './dtos/updateAuction.dto';
-import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  Between,
+  LessThan,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationQueryDto } from '../common/dtos/paginationQueryDto.dto';
+import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
+import { PaginationMetaResponseDto } from '../common/dtos/paginationMetaResponse.dto';
 
 @Injectable()
 export class AuctionsService {
@@ -25,16 +32,59 @@ export class AuctionsService {
     return this.auctions.save(newAuction);
   }
 
-  findAll(pagination: PaginationQueryDto): Promise<Auction[]> {
-    const { status } = pagination;
+  async findAll(
+    pagination: PaginationQueryDto,
+  ): Promise<{ data: Auction[]; meta: PaginationMetaResponseDto }> {
+    const {
+      page,
+      limit,
+      status,
+      'min-price': minPrice,
+      'max-price': maxPrice,
+    } = pagination;
+
     const currentDate = new Date();
     const statusCommand =
       status === 'open' ? MoreThanOrEqual(currentDate) : LessThan(currentDate);
-    const whereFilter = status ? { endDate: statusCommand } : {};
-    return this.auctions.find({
+    let whereFilter = {};
+
+    if (status) {
+      whereFilter = { ...whereFilter, endDate: statusCommand };
+    }
+
+    if (minPrice && maxPrice) {
+      whereFilter = {
+        ...whereFilter,
+        startingPrice: Between(minPrice, maxPrice),
+      };
+    } else if (minPrice) {
+      whereFilter = {
+        ...whereFilter,
+        startingPrice: MoreThanOrEqual(minPrice),
+      };
+    } else if (maxPrice) {
+      whereFilter = {
+        ...whereFilter,
+        startingPrice: LessThanOrEqual(maxPrice),
+      };
+    }
+
+    const [data, total] = await this.auctions.findAndCount({
       where: whereFilter,
       order: { endDate: 'ASC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    return {
+      data,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: string): Promise<Auction> {
@@ -46,6 +96,7 @@ export class AuctionsService {
   }
 
   update(id: string, updateAuctionDto: UpdateAuctionDto) {
+    console.log(updateAuctionDto);
     return `This action updates a #${id} auction`;
   }
 
