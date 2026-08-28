@@ -5,14 +5,16 @@ info:
 
 http:
   method: GET
-  url: "{{baseURL}}/auctions?limit=4&page=4"
+  url: "{{baseURL}}/auctions"
   params:
     - name: limit
       value: "4"
       type: query
+      disabled: true
     - name: page
       value: "4"
       type: query
+      disabled: true
     - name: max-price
       value: "1500"
       type: query
