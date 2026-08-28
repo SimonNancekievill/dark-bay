@@ -52,8 +52,15 @@ export class OffersService {
     return this.offers.save(offer);
   }
 
-  findAll() {
-    return `This action returns all offers`;
+  async findAll(auctionId: string) {
+    const auction = await this.auctions.findOneBy({ id: auctionId });
+    if (!auction) {
+      throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
+    }
+    return this.offers.find({
+      where: { auction: { id: auctionId } },
+      order: { offerPrice: 'DESC' },
+    });
   }
 
   findOne(id: number) {

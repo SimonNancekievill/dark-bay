@@ -6,11 +6,6 @@ import { UpdateOfferDto } from './dto/updateOffer.dto';
 export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
-  @Get()
-  findAll() {
-    return this.offersService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.offersService.findOne(+id);

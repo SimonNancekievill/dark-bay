@@ -30,7 +30,7 @@ export class AuctionsController {
     return this.auctionsService.create(auctionPayload);
   }
 
-  @Post(':id')
+  @Post(':id/offer')
   @SerializeOptions({ type: OfferResponseDto })
   createOffer(
     @Param('id', ParseUUIDPipe) id: string,
@@ -49,6 +49,12 @@ export class AuctionsController {
   @SerializeOptions({ type: AuctionResponseDto })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.auctionsService.findOne(id);
+  }
+
+  @Get(':id/offers')
+  @SerializeOptions({ type: OfferResponseDto })
+  findAllOffers(@Param('id', ParseUUIDPipe) id: string) {
+    return this.offersService.findAll(id);
   }
 
   @Patch(':id')
