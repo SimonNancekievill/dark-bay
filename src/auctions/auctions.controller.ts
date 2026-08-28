@@ -8,14 +8,17 @@ import {
   Delete,
   ParseUUIDPipe,
   SerializeOptions,
+  Query,
 } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
-import { CreateAuctionDto } from './dto/createAuction.dto';
-import { UpdateAuctionDto } from './dto/updateAuction.dto';
-import { AuctionResponseDto } from './dto/auctionResponse.dto';
-import { OfferResponseDto } from '../offers/dto/offerResponse.dto';
-import { CreateOfferDto } from '../offers/dto/createOffer.dto';
+import { CreateAuctionDto } from './dtos/createAuction.dto';
+import { UpdateAuctionDto } from './dtos/updateAuction.dto';
+import { AuctionResponseDto } from './dtos/auctionResponse.dto';
+import { OfferResponseDto } from '../offers/dtos/offerResponse.dto';
+import { CreateOfferDto } from '../offers/dtos/createOffer.dto';
 import { OffersService } from '../offers/offers.service';
+import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
+import { PaginatedAuctionsResponseDto } from './dtos/paginatedAuctionsResponse.dto';
 
 @Controller('auctions')
 export class AuctionsController {
@@ -24,31 +27,37 @@ export class AuctionsController {
     private readonly offersService: OffersService,
   ) {}
 
-  @Post()
-  @SerializeOptions({ type: AuctionResponseDto })
-  create(@Body() auctionPayload: CreateAuctionDto) {
-    return this.auctionsService.create(auctionPayload);
-  }
-
-  @Post(':id')
-  @SerializeOptions({ type: OfferResponseDto })
-  createOffer(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() createOfferDto: CreateOfferDto,
-  ) {
-    return this.offersService.create(id, createOfferDto);
-  }
-
   @Get()
-  @SerializeOptions({ type: AuctionResponseDto })
-  findAll() {
-    return this.auctionsService.findAll();
+  @SerializeOptions({ type: PaginatedAuctionsResponseDto })
+  findAll(@Query() pagination: PaginationQueryDto) {
+    return this.auctionsService.findAll(pagination);
   }
 
   @Get(':id')
   @SerializeOptions({ type: AuctionResponseDto })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.auctionsService.findOne(id);
+  }
+
+  @Get(':id/offers')
+  @SerializeOptions({ type: OfferResponseDto })
+  findAllOffers(@Param('id', ParseUUIDPipe) id: string) {
+    return this.offersService.findAll(id);
+  }
+
+  @Post()
+  @SerializeOptions({ type: AuctionResponseDto })
+  create(@Body() auctionPayload: CreateAuctionDto) {
+    return this.auctionsService.create(auctionPayload);
+  }
+
+  @Post(':id/offer')
+  @SerializeOptions({ type: OfferResponseDto })
+  createOffer(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() createOfferDto: CreateOfferDto,
+  ) {
+    return this.offersService.create(id, createOfferDto);
   }
 
   @Patch(':id')
