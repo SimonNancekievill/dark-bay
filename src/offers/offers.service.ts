@@ -39,9 +39,6 @@ export class OffersService {
 
     const offerCreation = new Date();
 
-    console.log(offerCreation.getTime(), '<', auction.endDate.getTime());
-    console.log(auction.endDate.getTime());
-
     if (offerCreation.getTime() > auction.endDate.getTime()) {
       throw new ConflictException(`Auction has already ended.`);
     }
