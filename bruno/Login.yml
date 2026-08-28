@@ -1,11 +1,11 @@
 info:
-  name: Register one User
+  name: Login
   type: http
-  seq: 6
+  seq: 7
 
 http:
   method: POST
-  url: "{{baseURL}}/auth/register"
+  url: "{{baseURL}}/auth/login"
   body:
     type: json
     data: |-

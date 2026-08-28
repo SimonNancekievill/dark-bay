@@ -19,6 +19,7 @@ import { CreateOfferDto } from '../offers/dtos/createOffer.dto';
 import { OffersService } from '../offers/offers.service';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginatedAuctionsResponseDto } from './dtos/paginatedAuctionsResponse.dto';
+import { Public } from '../common/decorators/public.decorator';
 
 @Controller('auctions')
 export class AuctionsController {
@@ -27,18 +28,21 @@ export class AuctionsController {
     private readonly offersService: OffersService,
   ) {}
 
+  @Public()
   @Get()
   @SerializeOptions({ type: PaginatedAuctionsResponseDto })
   findAll(@Query() pagination: PaginationQueryDto) {
     return this.auctionsService.findAll(pagination);
   }
 
+  @Public()
   @Get(':id')
   @SerializeOptions({ type: AuctionResponseDto })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.auctionsService.findOne(id);
   }
 
+  @Public()
   @Get(':id/offers')
   @SerializeOptions({ type: OfferResponseDto })
   findAllOffers(@Param('id', ParseUUIDPipe) id: string) {

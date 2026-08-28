@@ -95,8 +95,7 @@ export class AuctionsService {
     return auction;
   }
 
-  update(id: string, updateAuctionDto: UpdateAuctionDto) {
-    console.log(updateAuctionDto);
+  update(id: string, _updateAuctionDto: UpdateAuctionDto) {
     return `This action updates a #${id} auction`;
   }
 
