@@ -22,7 +22,7 @@ export class User {
   @OneToMany(() => Offer, (offer) => offer.bidder)
   offers!: Offer[];
 
-  @OneToMany(() => Auction, (auction) => auction.seller.id)
+  @OneToMany(() => Auction, (auction) => auction.seller)
   auctions!: Auction[];
 
   @CreateDateColumn()

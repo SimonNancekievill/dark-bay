@@ -31,9 +31,9 @@ export class Auction {
   @Column({ type: 'datetime' })
   endDate!: Date;
 
-  @OneToMany(() => Offer, (offer) => offer.auction.id)
-  offers?: Offer[];
+  @OneToMany(() => Offer, (offer) => offer.auction)
+  offers!: Offer[];
 
-  @ManyToOne(() => User, (user) => user.auctions, { nullable: true })
+  @ManyToOne(() => User, (user) => user.auctions)
   seller!: User;
 }

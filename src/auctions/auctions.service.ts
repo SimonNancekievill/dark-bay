@@ -24,11 +24,10 @@ export class AuctionsService {
 
   async create(auctionPayload: CreateAuctionDto, userData: User) {
     const createdAt = new Date();
-    const { id } = userData;
     const newAuction = this.auctions.create({
       ...auctionPayload,
       createdAt,
-      seller: { id },
+      seller: userData,
       endDate:
         auctionPayload.endDate ??
         new Date(createdAt.getTime() + THREE_DAYS_IN_MS),
@@ -78,6 +77,9 @@ export class AuctionsService {
       order: { endDate: 'ASC' },
       skip: (page - 1) * limit,
       take: limit,
+      relations: {
+        seller: true,
+      },
     });
 
     return {
@@ -92,7 +94,12 @@ export class AuctionsService {
   }
 
   async findOne(id: string): Promise<Auction> {
-    const auction = await this.auctions.findOneBy({ id });
+    const auction = await this.auctions.findOne({
+      where: { id },
+      relations: {
+        seller: true,
+      },
+    });
     if (!auction) {
       throw new NotFoundException(`Auction with ID ${id} not found.`);
     }
