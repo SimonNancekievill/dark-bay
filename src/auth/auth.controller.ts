@@ -14,8 +14,7 @@ import { UserResponseDto } from '../users/dtos/userResponse.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from './dtos/login.dto';
-import { User } from '../users/entities/user.entity';
-import { Request as ExpressRequest } from 'express';
+import type { AuthenticatedRequest } from './login.type';
 
 @Controller('auth')
 export class AuthController {
@@ -34,15 +33,12 @@ export class AuthController {
   @Public()
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(
-    @Request() req: ExpressRequest & { user: User },
-    @Body() _loginDto: LoginDto,
-  ) {
+  login(@Request() req: AuthenticatedRequest, @Body() _loginDto: LoginDto) {
     return this.authService.login(req.user);
   }
 
   @Get('me')
-  getMe(@Request() req: ExpressRequest & { user: User }) {
+  getMe(@Request() req: AuthenticatedRequest) {
     return req.user;
   }
 }

@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ParseUUIDPipe,
@@ -13,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { CreateAuctionDto } from './dtos/createAuction.dto';
-import { UpdateAuctionDto } from './dtos/updateAuction.dto';
 import { AuctionResponseDto } from './dtos/auctionResponse.dto';
 import { OfferResponseDto } from '../offers/dtos/offerResponse.dto';
 import { CreateOfferDto } from '../offers/dtos/createOffer.dto';
@@ -21,8 +19,7 @@ import { OffersService } from '../offers/offers.service';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginatedAuctionsResponseDto } from './dtos/paginatedAuctionsResponse.dto';
 import { Public } from '../common/decorators/public.decorator';
-import { User } from '../users/entities/user.entity';
-import { Request as ExpressRequest } from 'express';
+import type { AuthenticatedRequest } from '../auth/login.type';
 
 @Controller('auctions')
 export class AuctionsController {
@@ -56,7 +53,7 @@ export class AuctionsController {
   @SerializeOptions({ type: AuctionResponseDto })
   create(
     @Body() auctionPayload: CreateAuctionDto,
-    @Request() req: ExpressRequest & { user: User },
+    @Request() req: AuthenticatedRequest,
   ) {
     return this.auctionsService.create(auctionPayload, req.user);
   }
@@ -66,25 +63,15 @@ export class AuctionsController {
   createOffer(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() createOfferDto: CreateOfferDto,
-    @Request() req: ExpressRequest & { user: User },
+    @Request() req: AuthenticatedRequest,
   ) {
     return this.offersService.create(id, createOfferDto, req.user);
   }
 
-  // @Patch(':id')
-  // @SerializeOptions({ type: AuctionResponseDto })
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateAuctionDto: UpdateAuctionDto,
-  //   @Request() req: ExpressRequest & { user: User },
-  // ) {
-  //   return this.auctionsService.update(id, updateAuctionDto, req.user);
-  // }
-
   @Delete(':id')
   remove(
     @Param('id', ParseUUIDPipe) id: string,
-    @Request() req: ExpressRequest & { user: User },
+    @Request() req: AuthenticatedRequest,
   ) {
     return this.auctionsService.remove(id, req.user);
   }

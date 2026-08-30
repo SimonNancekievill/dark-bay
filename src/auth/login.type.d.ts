@@ -1,5 +1,11 @@
+import { Request } from 'express';
+import { User } from '../users/entities/user.entity';
+
 export type Payload = {
   sub: string;
   username: string;
-  createdAt: Date;
+};
+
+export type AuthenticatedRequest = Request & {
+  user: User;
 };

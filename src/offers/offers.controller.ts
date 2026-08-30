@@ -7,8 +7,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { OffersService } from './offers.service';
-import { Request as ExpressRequest } from 'express';
-import { User } from '../users/entities/user.entity';
+import type { AuthenticatedRequest } from '../auth/login.type';
 
 @Controller('offers')
 export class OffersController {
@@ -22,7 +21,7 @@ export class OffersController {
   @Delete(':id')
   remove(
     @Param('id', ParseUUIDPipe) id: string,
-    @Request() req: ExpressRequest & { user: User },
+    @Request() req: AuthenticatedRequest,
   ) {
     return this.offersService.remove(id, req.user);
   }

@@ -13,11 +13,11 @@ http:
           "title": "Vintage Rolex Submariner",
           "description":
             "1970s Rolex Submariner, great condition, comes with original box.",
-          "startingPrice": 3500,
+          "startingPrice": 3500
         }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN3YWdnZXIiLCJzdWIiOiJkN2JiOTJhMC04YjY3LTQ1OWEtYTIzYS1iYTYwYWZkZTVhN2YiLCJjcmVhdGVkQXQiOiIyMDI2LTA4LTI4VDE1OjM5OjEzLjAwMFoiLCJpYXQiOjE3ODc5MzIyNTksImV4cCI6MTc4NzkzNTg1OX0.XyHyZKKILsqZB0sMowpUkyEEaM7L66m6-ksquGpbMx4
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN3YWdnZXIiLCJzdWIiOiI1NTVmZmRlMi1hNzgzLTRjZDItYjUzNS02ZDQwY2IxY2Y3MDIiLCJpYXQiOjE3ODgxMjA4NTcsImV4cCI6MTc4ODEyNDQ1N30.v-Ar1uUzNM9iGi0wkhhYip9lV1KVihwlvJROsdGs0-M
 
 settings:
   encodeUrl: true
