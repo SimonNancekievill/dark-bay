@@ -1,5 +1,5 @@
 info:
-  name: Register one User
+  name: Register
   type: http
   seq: 6
 

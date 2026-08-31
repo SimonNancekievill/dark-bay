@@ -20,17 +20,26 @@ export class OffersService {
     private readonly auctions: Repository<Auction>,
   ) {}
   async create(auctionId: string, offerPayload: CreateOfferDto, user: User) {
-    const auction = await this.auctions.findOneBy({ id: auctionId });
+    const auction = await this.auctions.findOne({
+      where: { id: auctionId },
+      relations: {
+        seller: true,
+      },
+    });
 
     if (!auction) {
       throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
     }
 
+    if (auction.seller.id === user.id) {
+      throw new ConflictException(`You cannot bid on your own auctions.`);
+    }
+
     if (
-      offerPayload.offerPrice < (auction.currentPrice ?? auction.startingPrice)
+      offerPayload.offerPrice <= (auction.currentPrice ?? auction.startingPrice)
     ) {
       throw new ConflictException(
-        `Offer price of ${offerPayload.offerPrice} is less than required price.`,
+        `Offer price must be higher than required price.`,
       );
     }
 
@@ -44,7 +53,12 @@ export class OffersService {
       ...offerPayload,
       createdAt: offerCreation,
       auction,
+      bidder: user,
     });
+
+    auction.currentPrice = offerPayload.offerPrice;
+
+    await this.auctions.save(auction);
 
     return this.offers.save(offer);
   }

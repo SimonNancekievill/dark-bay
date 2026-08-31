@@ -1,5 +1,6 @@
+import { Type } from 'class-transformer';
 import {
-  IsDateString,
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -20,7 +21,8 @@ export class CreateAuctionDto {
   @Min(1)
   startingPrice!: number;
 
-  @IsDateString()
   @IsOptional()
-  endDate?: string;
+  @Type(() => Date)
+  @IsDate()
+  endDate?: Date;
 }

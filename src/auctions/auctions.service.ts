@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAuctionDto } from './dtos/createAuction.dto';
 import {
   Between,
@@ -13,7 +17,8 @@ import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginationMetaResponseDto } from '../common/dtos/paginationMetaResponse.dto';
 import { User } from '../users/entities/user.entity';
 
-const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
+const THREE_DAYS_IN_MS = 3 * ONE_DAY_IN_MS;
 
 @Injectable()
 export class AuctionsService {
@@ -21,19 +26,6 @@ export class AuctionsService {
     @InjectRepository(Auction)
     private readonly auctions: Repository<Auction>,
   ) {}
-
-  async create(auctionPayload: CreateAuctionDto, userData: User) {
-    const createdAt = new Date();
-    const newAuction = this.auctions.create({
-      ...auctionPayload,
-      createdAt,
-      seller: userData,
-      endDate:
-        auctionPayload.endDate ??
-        new Date(createdAt.getTime() + THREE_DAYS_IN_MS),
-    });
-    return this.auctions.save(newAuction);
-  }
 
   async findAll(
     pagination: PaginationQueryDto,
@@ -104,6 +96,29 @@ export class AuctionsService {
       throw new NotFoundException(`Auction with ID ${id} not found.`);
     }
     return auction;
+  }
+
+  async create(auctionPayload: CreateAuctionDto, user: User) {
+    const createdAt = new Date();
+    const endDate =
+      auctionPayload.endDate ??
+      new Date(createdAt.getTime() + THREE_DAYS_IN_MS);
+
+    if (endDate.getTime() < createdAt.getTime()) {
+      throw new ConflictException('Auction end cannot be in the past.');
+    }
+
+    if (endDate.getTime() < createdAt.getTime() + ONE_DAY_IN_MS) {
+      throw new ConflictException('Auction has to last at least one day.');
+    }
+
+    const newAuction = this.auctions.create({
+      ...auctionPayload,
+      createdAt,
+      seller: user,
+      endDate,
+    });
+    return this.auctions.save(newAuction);
   }
 
   remove(id: string, _user: User) {
