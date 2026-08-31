@@ -1,0 +1,18 @@
+info:
+  name: Me
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{baseURL}}/auth/me"
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN3YWdnZXIiLCJzdWIiOiI1NTVmZmRlMi1hNzgzLTRjZDItYjUzNS02ZDQwY2IxY2Y3MDIiLCJpYXQiOjE3ODgxMjA4NTcsImV4cCI6MTc4ODEyNDQ1N30.v-Ar1uUzNM9iGi0wkhhYip9lV1KVihwlvJROsdGs0-M
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

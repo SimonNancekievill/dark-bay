@@ -1,14 +1,14 @@
 info:
-  name: Find all Offers
+  name: Find one Auction
   type: http
-  seq: 5
+  seq: 2
 
 http:
   method: GET
-  url: "{{baseURL}}/auctions/:id/offers"
+  url: "{{baseURL}}/auctions/:id"
   params:
     - name: id
-      value: 201e7d54-043c-4d03-a794-ae335406c757
+      value: b39acac0-cc60-455d-a95a-a861ee4235e6
       type: path
   auth: inherit
 

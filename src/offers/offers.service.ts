@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { Offer } from './entities/offer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auction } from '../auctions/entities/auction.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class OffersService {
@@ -18,22 +19,27 @@ export class OffersService {
     @InjectRepository(Auction)
     private readonly auctions: Repository<Auction>,
   ) {}
-  async create(auctionId: string, offerPayload: CreateOfferDto) {
-    const auction = await this.auctions.findOneBy({ id: auctionId });
+  async create(auctionId: string, offerPayload: CreateOfferDto, user: User) {
+    const auction = await this.auctions.findOne({
+      where: { id: auctionId },
+      relations: {
+        seller: true,
+      },
+    });
 
     if (!auction) {
       throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
     }
 
-    if (offerPayload.offerPrice < auction.startingPrice) {
-      throw new ConflictException(
-        `Offer price of ${offerPayload.offerPrice} is less than starting price (${auction.startingPrice})`,
-      );
+    if (auction.seller.id === user.id) {
+      throw new ConflictException(`You cannot bid on your own auctions.`);
     }
 
-    if (offerPayload.offerPrice < auction.currentPrice) {
+    if (
+      offerPayload.offerPrice <= (auction.currentPrice ?? auction.startingPrice)
+    ) {
       throw new ConflictException(
-        `Offer price of ${offerPayload.offerPrice} is less than current price (${auction.currentPrice})`,
+        `Offer price must be higher than required price.`,
       );
     }
 
@@ -47,7 +53,12 @@ export class OffersService {
       ...offerPayload,
       createdAt: offerCreation,
       auction,
+      bidder: user,
     });
+
+    auction.currentPrice = offerPayload.offerPrice;
+
+    await this.auctions.save(auction);
 
     return this.offers.save(offer);
   }
@@ -63,15 +74,11 @@ export class OffersService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} offer`;
   }
 
-  update(id: number, offerPayload: UpdateOfferDto) {
-    return `This action updates a #${id} offer`;
-  }
-
-  remove(id: number) {
+  remove(id: string, _user: User) {
     return `This action removes a #${id} offer`;
   }
 }

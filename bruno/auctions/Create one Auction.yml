@@ -1,0 +1,27 @@
+info:
+  name: Create one Auction
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseURL}}/auctions"
+  body:
+    type: json
+    data: |2-
+       {
+          "title": "Vintage Rolex Submariner",
+          "description":
+            "1970s Rolex Submariner, great condition, comes with original box.",
+          "startingPrice": 3500
+        }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN3YWdnZXIiLCJzdWIiOiI1NTVmZmRlMi1hNzgzLTRjZDItYjUzNS02ZDQwY2IxY2Y3MDIiLCJpYXQiOjE3ODgxMjA4NTcsImV4cCI6MTc4ODEyNDQ1N30.v-Ar1uUzNM9iGi0wkhhYip9lV1KVihwlvJROsdGs0-M
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

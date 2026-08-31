@@ -1,23 +1,24 @@
 info:
   name: Create one Offer
   type: http
-  seq: 4
+  seq: 2
 
 http:
   method: POST
   url: "{{baseURL}}/auctions/:id/offer"
   params:
     - name: id
-      value: 62b8f736-6fdc-428d-a098-c6baa5e67380
+      value: 202279bb-1844-4731-990f-332c100180ea
       type: path
   body:
     type: json
     data: |-
       {
-        "bidder": "Simon",
         "offerPrice": 23000
       }
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VzZXIiLCJzdWIiOiIwMWVhMmJmMS1lZTZjLTQzNmEtOTI0Yy1hZDdhZjA4N2RkOTAiLCJpYXQiOjE3ODgxNTY1NzgsImV4cCI6MTc4ODE2MDE3OH0.o0MdeB8cH4tXKqOHrTcCbe0tFsV61wa4oJ0KYLQICtA
 
 settings:
   encodeUrl: true

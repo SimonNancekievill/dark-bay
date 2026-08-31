@@ -1,11 +1,13 @@
 import { Expose, Type } from 'class-transformer';
+import { UserResponseDto } from '../../users/dtos/userResponse.dto';
 
 export class OfferResponseDto {
   @Expose()
   id!: string;
 
   @Expose()
-  bidder!: string;
+  @Type(() => UserResponseDto)
+  bidder!: UserResponseDto;
 
   @Expose()
   offerPrice!: number;
