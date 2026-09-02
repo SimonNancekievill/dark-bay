@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseURL}}/auctions"
+  url: "{{baseURL}}/auctions?status=open"
   params:
     - name: limit
       value: "4"
@@ -30,8 +30,9 @@ http:
     - name: status
       value: open
       type: query
-      disabled: true
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VzZXIiLCJzdWIiOiIyYzZhMGM5MC0yMzhhLTQ2OWMtOTc5Zi0xZjVlMDk4ZTkyNzkiLCJpYXQiOjE3ODgyNDM3MTQsImV4cCI6MTc4ODI0NzMxNH0.yVJQ-w138e3LnEiVcE8QktBh0oqwElXXq2uNukitrY8
 
 settings:
   encodeUrl: true

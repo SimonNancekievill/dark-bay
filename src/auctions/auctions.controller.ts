@@ -9,6 +9,8 @@ import {
   SerializeOptions,
   Query,
   Request,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { CreateAuctionDto } from './dtos/createAuction.dto';
@@ -69,6 +71,7 @@ export class AuctionsController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(
     @Param('id', ParseUUIDPipe) id: string,
     @Request() req: AuthenticatedRequest,

@@ -6,9 +6,12 @@ info:
 http:
   method: GET
   url: "{{baseURL}}/auth/me"
+  body:
+    type: json
+    data: ""
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN3YWdnZXIiLCJzdWIiOiI1NTVmZmRlMi1hNzgzLTRjZDItYjUzNS02ZDQwY2IxY2Y3MDIiLCJpYXQiOjE3ODgxMjA4NTcsImV4cCI6MTc4ODEyNDQ1N30.v-Ar1uUzNM9iGi0wkhhYip9lV1KVihwlvJROsdGs0-M
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VzZXIiLCJzdWIiOiIyYzZhMGM5MC0yMzhhLTQ2OWMtOTc5Zi0xZjVlMDk4ZTkyNzkiLCJpYXQiOjE3ODgyNDM3MTQsImV4cCI6MTc4ODI0NzMxNH0.yVJQ-w138e3LnEiVcE8QktBh0oqwElXXq2uNukitrY8
 
 settings:
   encodeUrl: true
