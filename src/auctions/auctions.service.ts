@@ -136,17 +136,19 @@ export class AuctionsService {
       throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
     }
 
+    const hasOffers: boolean = auction.currentPrice ? true : false;
+
     if (auction.seller.id !== user.id) {
       throw new ConflictException(`You can only update your own auctions.`);
     }
 
-    if (auctionPayload.startingPrice && auction.currentPrice) {
+    if (auctionPayload.startingPrice && hasOffers) {
       throw new ConflictException(
         'You cannot change the starting price after someone has already made an offer.',
       );
     }
 
-    if (auctionPayload.endDate && auction.currentPrice) {
+    if (auctionPayload.endDate && hasOffers) {
       throw new ConflictException(
         'You cannot change the end date after someone has already made an offer.',
       );
@@ -167,7 +169,7 @@ export class AuctionsService {
       throw new ConflictException('Auction has to last at least one day.');
     }
 
-    if (auctionPayload.description && auction.currentPrice) {
+    if (auctionPayload.description && hasOffers) {
       auctionPayload.description = `update:
 ${auctionPayload.description}
 
