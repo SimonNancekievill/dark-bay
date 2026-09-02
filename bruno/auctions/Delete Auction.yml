@@ -1,10 +1,10 @@
 info:
-  name: Find one Auction
+  name: Delete Auction
   type: http
-  seq: 2
+  seq: 4
 
 http:
-  method: GET
+  method: DELETE
   url: "{{baseURL}}/auctions/:id"
   params:
     - name: id

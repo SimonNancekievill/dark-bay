@@ -4,12 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateOfferDto } from './dtos/createOffer.dto';
-import { UpdateOfferDto } from './dtos/updateOffer.dto';
 import { Repository } from 'typeorm';
 import { Offer } from './entities/offer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auction } from '../auctions/entities/auction.entity';
 import { User } from '../users/entities/user.entity';
+
+const ONE_HOUR_IN_MS = 60 * 60 * 1000;
 
 @Injectable()
 export class OffersService {
@@ -19,6 +20,7 @@ export class OffersService {
     @InjectRepository(Auction)
     private readonly auctions: Repository<Auction>,
   ) {}
+
   async create(auctionId: string, offerPayload: CreateOfferDto, user: User) {
     const auction = await this.auctions.findOne({
       where: { id: auctionId },
@@ -65,6 +67,7 @@ export class OffersService {
 
   async findAll(auctionId: string) {
     const auction = await this.auctions.findOneBy({ id: auctionId });
+
     if (!auction) {
       throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
     }
@@ -74,11 +77,44 @@ export class OffersService {
     });
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} offer`;
-  }
+  async remove(offerId: string, user: User) {
+    const offer = await this.offers.findOne({
+      where: { id: offerId },
+      relations: {
+        auction: true,
+        bidder: true,
+      },
+    });
 
-  remove(id: string, _user: User) {
-    return `This action removes a #${id} offer`;
+    if (!offer) {
+      throw new NotFoundException(`Offer with ID ${offerId} not found.`);
+    }
+
+    if (offer.bidder.id !== user.id) {
+      throw new ConflictException(`You can only delete your own offers.`);
+    }
+
+    const auction = await this.auctions.findOneBy({ id: offer.auction.id });
+    if (auction!.endDate.getTime() <= new Date().getTime()) {
+      throw new ConflictException(
+        `Auction with ID ${auction!.id} has already ended.`,
+      );
+    }
+
+    if (new Date().getTime() > auction!.endDate.getTime() - ONE_HOUR_IN_MS) {
+      throw new ConflictException(
+        'Cannot delete offer within one hour of auction end.',
+      );
+    }
+
+    const result = await this.offers.delete(offerId);
+
+    if ((result.affected ?? 0) < 1) {
+      throw new ConflictException(
+        `Offer with ID ${offerId} could not be deleted.`,
+      );
+    }
+
+    return result;
   }
 }

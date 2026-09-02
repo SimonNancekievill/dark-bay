@@ -10,7 +10,9 @@ export class Offer {
   @Column({ default: 0 })
   offerPrice!: number;
 
-  @ManyToOne(() => Auction, (auction) => auction.offers)
+  @ManyToOne(() => Auction, (auction) => auction.offers, {
+    onDelete: 'CASCADE',
+  })
   auction!: Auction;
 
   @ManyToOne(() => User, (user) => user.offers)

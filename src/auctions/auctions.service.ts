@@ -16,6 +16,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginationMetaResponseDto } from '../common/dtos/paginationMetaResponse.dto';
 import { User } from '../users/entities/user.entity';
+import { UpdateAuctionDto } from './dtos/updateAuction.dto';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 const THREE_DAYS_IN_MS = 3 * ONE_DAY_IN_MS;
@@ -121,7 +122,97 @@ export class AuctionsService {
     return this.auctions.save(newAuction);
   }
 
-  remove(id: string, _user: User) {
-    return `This action removes a #${id} auction`;
+  async update(
+    auctionId: string,
+    auctionPayload: UpdateAuctionDto,
+    user: User,
+  ) {
+    const auction = await this.auctions.findOne({
+      where: { id: auctionId },
+      relations: { seller: true },
+    });
+
+    if (!auction) {
+      throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
+    }
+
+    if (auction.seller.id !== user.id) {
+      throw new ConflictException(`You can only update your own auctions.`);
+    }
+
+    if (auctionPayload.startingPrice && auction.currentPrice) {
+      throw new ConflictException(
+        'You cannot change the starting price after someone has already made an offer.',
+      );
+    }
+
+    if (auctionPayload.endDate && auction.currentPrice) {
+      throw new ConflictException(
+        'You cannot change the end date after someone has already made an offer.',
+      );
+    }
+
+    if (
+      auctionPayload.endDate &&
+      auctionPayload.endDate.getTime() < auction.createdAt.getTime()
+    ) {
+      throw new ConflictException('Auction end cannot be in the past.');
+    }
+
+    if (
+      auctionPayload.endDate &&
+      auctionPayload.endDate.getTime() <
+        auction.createdAt.getTime() + ONE_DAY_IN_MS
+    ) {
+      throw new ConflictException('Auction has to last at least one day.');
+    }
+
+    if (auctionPayload.description && auction.currentPrice) {
+      auctionPayload.description = `update:
+${auctionPayload.description}
+
+${auction.description}`;
+    }
+
+    Object.assign(auction, auctionPayload);
+
+    return this.auctions.save(auction);
+  }
+
+  async remove(auctionId: string, user: User) {
+    const auction = await this.auctions.findOne({
+      where: { id: auctionId },
+      relations: { seller: true },
+    });
+
+    if (!auction) {
+      throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
+    }
+
+    if (auction.seller.id !== user.id) {
+      throw new ConflictException(`You can only delete your own auctions.`);
+    }
+
+    if (auction.endDate.getTime() <= new Date().getTime()) {
+      throw new ConflictException(
+        'Auctions that have already ended cannot be deleted.',
+      );
+    }
+
+    if (new Date().getTime() > auction.endDate.getTime() - ONE_DAY_IN_MS) {
+      throw new ConflictException(
+        'Cannot delete auction within one day of auction end.',
+      );
+    }
+
+    const result = await this.auctions.delete(auctionId);
+
+    if ((result.affected ?? 0) < 1) {
+      throw new ConflictException(
+        `Auction with ID ${auctionId} could not be deleted.`,
+      );
+    }
+
+    return result;
   }
 }

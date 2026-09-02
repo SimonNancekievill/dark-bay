@@ -9,6 +9,9 @@ import {
   SerializeOptions,
   Query,
   Request,
+  HttpCode,
+  HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { CreateAuctionDto } from './dtos/createAuction.dto';
@@ -20,6 +23,7 @@ import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginatedAuctionsResponseDto } from './dtos/paginatedAuctionsResponse.dto';
 import { Public } from '../common/decorators/public.decorator';
 import type { AuthenticatedRequest } from '../auth/login.type';
+import { UpdateAuctionDto } from './dtos/updateAuction.dto';
 
 @Controller('auctions')
 export class AuctionsController {
@@ -62,13 +66,24 @@ export class AuctionsController {
   @SerializeOptions({ type: OfferResponseDto })
   createOffer(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() createOfferDto: CreateOfferDto,
+    @Body() offerPayload: CreateOfferDto,
     @Request() req: AuthenticatedRequest,
   ) {
-    return this.offersService.create(id, createOfferDto, req.user);
+    return this.offersService.create(id, offerPayload, req.user);
+  }
+
+  @Patch(':id')
+  @SerializeOptions({ type: AuctionResponseDto })
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() auctionPayload: UpdateAuctionDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.auctionsService.update(id, auctionPayload, req.user);
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(
     @Param('id', ParseUUIDPipe) id: string,
     @Request() req: AuthenticatedRequest,

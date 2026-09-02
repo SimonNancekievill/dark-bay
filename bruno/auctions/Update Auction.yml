@@ -1,10 +1,10 @@
 info:
-  name: Find one Auction
+  name: Update Auction
   type: http
-  seq: 2
+  seq: 5
 
 http:
-  method: GET
+  method: PATCH
   url: "{{baseURL}}/auctions/:id"
   params:
     - name: id
