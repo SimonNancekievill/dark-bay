@@ -1,0 +1,20 @@
+info:
+  name: Delete Auction
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: "{{baseURL}}/auctions/:id"
+  params:
+    - name: id
+      value: ""
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

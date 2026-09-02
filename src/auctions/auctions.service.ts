@@ -121,7 +121,40 @@ export class AuctionsService {
     return this.auctions.save(newAuction);
   }
 
-  remove(id: string, _user: User) {
-    return `This action removes a #${id} auction`;
+  async remove(auctionId: string, user: User) {
+    const auction = await this.auctions.findOne({
+      where: { id: auctionId },
+      relations: { seller: true },
+    });
+
+    if (!auction) {
+      throw new NotFoundException(`Auction with ID ${auctionId} not found.`);
+    }
+
+    if (auction.seller.id !== user.id) {
+      throw new ConflictException(`You can only delete your own auctions.`);
+    }
+
+    if (auction.endDate.getTime() <= new Date().getTime()) {
+      throw new ConflictException(
+        'Auctions that have already ended cannot be deleted.',
+      );
+    }
+
+    if (new Date().getTime() > auction.endDate.getTime() - ONE_DAY_IN_MS) {
+      throw new ConflictException(
+        'Cannot delete auction within one day of auction end.',
+      );
+    }
+
+    const result = await this.auctions.delete(auctionId);
+
+    if ((result.affected ?? 0) < 1) {
+      throw new ConflictException(
+        `Auction with ID ${auctionId} could not be deleted.`,
+      );
+    }
+
+    return result;
   }
 }

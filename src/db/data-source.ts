@@ -11,4 +11,7 @@ export const AppDataSource = new DataSource({
   entities: [Auction, Offer, User],
   migrations: ['src/db/migrations/*.ts'],
   synchronize: false,
+  prepareDatabase: (db) => {
+    db.pragma('foreign_keys = ON');
+  },
 });

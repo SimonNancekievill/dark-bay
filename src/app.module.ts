@@ -26,6 +26,9 @@ import { JwtAuthGuard } from './auth/jwtAuth.guard';
         logging: false,
         enableWAL: true,
         statementCacheSize: 100,
+        prepareDatabase: (db) => {
+          db.pragma('foreign_keys = ON');
+        },
       }),
     }),
     AuctionsModule,
