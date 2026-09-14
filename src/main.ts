@@ -21,6 +21,10 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: '*',
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Dark Bay API')
     .setDescription('Auctions, offers and users')
@@ -31,7 +35,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  const port = process.env.PORT ?? 3000;
+  const port = process.env.PORT ?? 3030;
   await app.listen(port);
   console.log(`http://localhost:${port}`);
 }
