@@ -18,6 +18,6 @@ export class Offer {
   @ManyToOne(() => User, (user) => user.offers)
   bidder!: User;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 }
