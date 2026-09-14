@@ -6,12 +6,12 @@ import 'dotenv/config';
 import { User } from '../users/entities/user.entity';
 
 export const AppDataSource = new DataSource({
-  type: 'better-sqlite3',
-  database: process.env.DB_FILE!,
+  type: 'postgres',
+  url: process.env.POSTGRES_URL!,
   entities: [Auction, Offer, User],
   migrations: ['src/db/migrations/*.ts'],
   synchronize: false,
-  prepareDatabase: (db) => {
-    db.pragma('foreign_keys = ON');
-  },
+  // prepareDatabase: (db) => {
+  //   db.pragma('foreign_keys = ON');
+  // },
 });

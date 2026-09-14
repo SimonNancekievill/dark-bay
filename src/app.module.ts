@@ -19,16 +19,16 @@ import { JwtAuthGuard } from './auth/jwtAuth.guard';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: 'better-sqlite3',
-        database: configService.getOrThrow<string>('DB_FILE'),
+        type: 'postgres',
+        url: configService.getOrThrow<string>('POSTGRES_URL'),
         entities: [Auction, Offer, User],
         synchronize: true,
         logging: false,
         enableWAL: true,
         statementCacheSize: 100,
-        prepareDatabase: (db) => {
-          db.pragma('foreign_keys = ON');
-        },
+        // prepareDatabase: (db) => {
+        //   db.pragma('foreign_keys = ON');
+        // },
       }),
     }),
     AuctionsModule,
