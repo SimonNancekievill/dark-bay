@@ -19,6 +19,9 @@ export class AuctionResponseDto {
   startingPrice!: number;
 
   @Expose()
+  currentPrice!: number | null;
+
+  @Expose()
   @Type(() => Date)
   createdAt!: Date;
 

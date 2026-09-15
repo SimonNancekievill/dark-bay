@@ -2,4 +2,8 @@ name: local
 variables:
   - name: baseURL
     value: http://[::1]:3030
+    disabled: true
+    description: ""
+  - name: baseURL
+    value: https://dark-bay-9nut.onrender.com
     description: ""
