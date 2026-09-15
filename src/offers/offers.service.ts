@@ -73,6 +73,9 @@ export class OffersService {
     }
     return this.offers.find({
       where: { auction: { id: auctionId } },
+      relations: {
+        bidder: true,
+      },
       order: { offerPrice: 'DESC' },
     });
   }
