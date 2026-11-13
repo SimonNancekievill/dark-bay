@@ -1,5 +1,10 @@
-const SALT_ROUNDS = 12;
 import * as bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 12;
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+const now = Date.now();
+
+const daysFromNow = (days: number) => new Date(now + days * DAY_IN_MS);
 
 export async function getUsersData() {
 	return [
@@ -22,8 +27,8 @@ export const auctionsData = [
 		seller: "watchlover88",
 		startingPrice: 3500,
 		currentPrice: 3750,
-		createdAt: new Date("2026-08-20T09:00:00.000Z"),
-		endDate: new Date("2026-09-15T18:00:00.000Z"),
+		createdAt: daysFromNow(-10),
+		endDate: daysFromNow(5),
 	},
 	{
 		userIndex: 0,
@@ -32,8 +37,8 @@ export const auctionsData = [
 		seller: "techseller_ben",
 		startingPrice: 1800,
 		currentPrice: 1950,
-		createdAt: new Date("2026-08-21T11:30:00.000Z"),
-		endDate: new Date("2026-09-10T12:00:00.000Z"),
+		createdAt: daysFromNow(-8),
+		endDate: daysFromNow(3),
 	},
 	{
 		userIndex: 0,
@@ -42,8 +47,8 @@ export const auctionsData = [
 		seller: "furniturehub_freiburg",
 		startingPrice: 450,
 		currentPrice: 475,
-		createdAt: new Date("2026-08-22T14:15:00.000Z"),
-		endDate: new Date("2026-08-25T14:15:00.000Z"),
+		createdAt: daysFromNow(-20),
+		endDate: daysFromNow(-17),
 	},
 	{
 		userIndex: 0,
@@ -52,8 +57,8 @@ export const auctionsData = [
 		seller: "guitarcollector",
 		startingPrice: 900,
 		currentPrice: 950,
-		createdAt: new Date("2026-08-19T16:45:00.000Z"),
-		endDate: new Date("2026-09-20T20:00:00.000Z"),
+		createdAt: daysFromNow(-12),
+		endDate: daysFromNow(10),
 	},
 	{
 		userIndex: 0,
@@ -62,8 +67,8 @@ export const auctionsData = [
 		seller: "rugtraderemma",
 		startingPrice: 1200,
 		currentPrice: 1250,
-		createdAt: new Date("2026-08-18T10:00:00.000Z"),
-		endDate: new Date("2026-09-05T14:00:00.000Z"),
+		createdAt: daysFromNow(-30),
+		endDate: daysFromNow(-12),
 	},
 	{
 		userIndex: 0,
@@ -71,8 +76,9 @@ export const auctionsData = [
 		description: "Barely used, 32GB RAM, 1TB SSD, still under warranty.",
 		seller: "techseller_ben",
 		startingPrice: 2100,
-		createdAt: new Date("2026-08-23T08:20:00.000Z"),
-		endDate: new Date("2026-09-12T16:00:00.000Z"),
+		currentPrice: 2150,
+		createdAt: daysFromNow(-5),
+		endDate: daysFromNow(2),
 	},
 	{
 		userIndex: 0,
@@ -80,8 +86,9 @@ export const auctionsData = [
 		description: "Framed original oil on canvas, signed by the artist.",
 		seller: "artgallery_north",
 		startingPrice: 300,
-		createdAt: new Date("2026-08-24T13:00:00.000Z"),
-		endDate: new Date("2026-09-12T16:00:00.000Z"),
+		currentPrice: 320,
+		createdAt: daysFromNow(-4),
+		endDate: daysFromNow(6),
 	},
 	{
 		userIndex: 0,
@@ -89,8 +96,9 @@ export const auctionsData = [
 		description: "Trek Fuel EX, size L, serviced last month, minor scratches.",
 		seller: "bikeguy_max",
 		startingPrice: 600,
-		createdAt: new Date("2026-08-17T17:30:00.000Z"),
-		endDate: new Date("2026-09-08T09:00:00.000Z"),
+		currentPrice: 630,
+		createdAt: daysFromNow(-25),
+		endDate: daysFromNow(-3),
 	},
 	{
 		userIndex: 0,
@@ -98,8 +106,8 @@ export const auctionsData = [
 		description: "Home espresso machine, excellent condition, includes tamper and knock box.",
 		seller: "coffeenerd_lisa",
 		startingPrice: 1400,
-		createdAt: new Date("2026-08-25T07:45:00.000Z"),
-		endDate: new Date("2026-09-12T16:00:00.000Z"),
+		createdAt: daysFromNow(-2),
+		endDate: daysFromNow(0.5),
 	},
 	{
 		userIndex: 0,
@@ -107,8 +115,8 @@ export const auctionsData = [
 		description: "Set of 5 first-edition novels, protective sleeves included.",
 		seller: "bookwormjane",
 		startingPrice: 750,
-		createdAt: new Date("2026-08-16T12:00:00.000Z"),
-		endDate: new Date("2026-09-25T10:00:00.000Z"),
+		createdAt: daysFromNow(-1),
+		endDate: daysFromNow(20),
 	},
 ];
 
@@ -117,60 +125,60 @@ export const offersData = [
 		userIndex: 1,
 		auctionIndex: 0,
 		offerPrice: 3600,
-		createdAt: new Date("2026-08-20T10:15:00.000Z"),
+		createdAt: daysFromNow(-9.5),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 0,
 		offerPrice: 3750,
-		createdAt: new Date("2026-08-21T09:30:00.000Z"),
+		createdAt: daysFromNow(-8),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 1,
 		offerPrice: 1850,
-		createdAt: new Date("2026-08-22T14:00:00.000Z"),
+		createdAt: daysFromNow(-7),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 1,
 		offerPrice: 1950,
-		createdAt: new Date("2026-08-23T16:45:00.000Z"),
+		createdAt: daysFromNow(-6),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 2,
 		offerPrice: 475,
-		createdAt: new Date("2026-08-23T11:00:00.000Z"),
+		createdAt: daysFromNow(-18),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 3,
 		offerPrice: 950,
-		createdAt: new Date("2026-08-20T08:20:00.000Z"),
+		createdAt: daysFromNow(-11),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 4,
 		offerPrice: 1250,
-		createdAt: new Date("2026-08-19T13:10:00.000Z"),
+		createdAt: daysFromNow(-25),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 5,
 		offerPrice: 2150,
-		createdAt: new Date("2026-08-24T10:00:00.000Z"),
+		createdAt: daysFromNow(-4),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 6,
 		offerPrice: 320,
-		createdAt: new Date("2026-08-25T15:30:00.000Z"),
+		createdAt: daysFromNow(-3),
 	},
 	{
 		userIndex: 1,
 		auctionIndex: 7,
 		offerPrice: 630,
-		createdAt: new Date("2026-08-18T17:00:00.000Z"),
+		createdAt: daysFromNow(-20),
 	},
 ];
