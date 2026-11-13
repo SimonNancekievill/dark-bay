@@ -1,45 +1,46 @@
-import { JwtService } from '@nestjs/jwt';
-import { Test, TestingModule } from '@nestjs/testing';
-import * as bcrypt from 'bcrypt';
-import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { JwtService } from "@nestjs/jwt";
+import { Test, TestingModule } from "@nestjs/testing";
+import * as bcrypt from "bcrypt";
 
-describe('AuthService', () => {
-  let service: AuthService;
-  const usersService = { findByUsername: vi.fn() };
+import { AuthService } from "./auth.service";
+import { UsersService } from "../users/users.service";
 
-  beforeEach(async () => {
-    vi.clearAllMocks();
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        AuthService,
-        { provide: UsersService, useValue: usersService },
-        { provide: JwtService, useValue: { sign: vi.fn(() => 'token') } },
-      ],
-    }).compile();
+describe("AuthService", () => {
+	let service: AuthService;
+	const usersService = { findByUsername: vi.fn() };
 
-    service = module.get<AuthService>(AuthService);
-  });
+	beforeEach(async () => {
+		vi.clearAllMocks();
+		const module: TestingModule = await Test.createTestingModule({
+			providers: [
+				AuthService,
+				{ provide: UsersService, useValue: usersService },
+				{ provide: JwtService, useValue: { sign: vi.fn(() => "token") } },
+			],
+		}).compile();
 
-  it('returns the user without the password hash for a correct password', async () => {
-    const passwordHash = await bcrypt.hash('secret123', 4);
-    usersService.findByUsername.mockResolvedValue({ id: 'u1', username: 'anna', passwordHash });
+		service = module.get<AuthService>(AuthService);
+	});
 
-    const user = await service.validateUser('anna', 'secret123');
+	it("returns the user without the password hash for a correct password", async () => {
+		const passwordHash = await bcrypt.hash("secret123", 4);
+		usersService.findByUsername.mockResolvedValue({ id: "u1", username: "anna", passwordHash });
 
-    expect(user).toEqual({ id: 'u1', username: 'anna' });
-  });
+		const user = await service.validateUser("anna", "secret123");
 
-  it('returns null for a wrong password', async () => {
-    const passwordHash = await bcrypt.hash('secret123', 4);
-    usersService.findByUsername.mockResolvedValue({ id: 'u1', username: 'anna', passwordHash });
+		expect(user).toEqual({ id: "u1", username: "anna" });
+	});
 
-    expect(await service.validateUser('anna', 'wrong')).toBeNull();
-  });
+	it("returns null for a wrong password", async () => {
+		const passwordHash = await bcrypt.hash("secret123", 4);
+		usersService.findByUsername.mockResolvedValue({ id: "u1", username: "anna", passwordHash });
 
-  it('returns null for an unknown user', async () => {
-    usersService.findByUsername.mockResolvedValue(null);
+		expect(await service.validateUser("anna", "wrong")).toBeNull();
+	});
 
-    expect(await service.validateUser('nobody', 'secret123')).toBeNull();
-  });
+	it("returns null for an unknown user", async () => {
+		usersService.findByUsername.mockResolvedValue(null);
+
+		expect(await service.validateUser("nobody", "secret123")).toBeNull();
+	});
 });

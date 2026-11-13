@@ -1,24 +1,25 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuctionsController } from './auctions.controller';
-import { AuctionsService } from './auctions.service';
-import { OffersService } from '../offers/offers.service';
+import { Test, TestingModule } from "@nestjs/testing";
 
-describe('AuctionsController', () => {
-  let controller: AuctionsController;
+import { AuctionsController } from "./auctions.controller";
+import { AuctionsService } from "./auctions.service";
+import { OffersService } from "../offers/offers.service";
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [AuctionsController],
-      providers: [
-        { provide: AuctionsService, useValue: {} },
-        { provide: OffersService, useValue: {} },
-      ],
-    }).compile();
+describe("AuctionsController", () => {
+	let controller: AuctionsController;
 
-    controller = module.get<AuctionsController>(AuctionsController);
-  });
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			controllers: [AuctionsController],
+			providers: [
+				{ provide: AuctionsService, useValue: {} },
+				{ provide: OffersService, useValue: {} },
+			],
+		}).compile();
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+		controller = module.get<AuctionsController>(AuctionsController);
+	});
+
+	it("should be defined", () => {
+		expect(controller).toBeDefined();
+	});
 });

@@ -1,72 +1,71 @@
-import { INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
-import { setupApp } from './../src/app.setup';
+import { INestApplication } from "@nestjs/common";
+import { Test, TestingModule } from "@nestjs/testing";
+import request from "supertest";
+import { App } from "supertest/types";
 
-describe('Auctions (e2e)', () => {
-  let app: INestApplication<App>;
-  const credentials = {
-    username: `e2e-${Date.now()}`,
-    password: 'ichBin3inHase',
-  };
+import { AppModule } from "./../src/app.module";
+import { setupApp } from "./../src/app.setup";
 
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+describe("Auctions (e2e)", () => {
+	let app: INestApplication<App>;
+	const credentials = {
+		username: `e2e-${Date.now()}`,
+		password: "ichBin3inHase",
+	};
 
-    app = moduleFixture.createNestApplication();
-    setupApp(app);
-    await app.init();
-  });
+	beforeAll(async () => {
+		const moduleFixture: TestingModule = await Test.createTestingModule({
+			imports: [AppModule],
+		}).compile();
 
-  afterAll(async () => {
-    await app.close();
-  });
+		app = moduleFixture.createNestApplication();
+		setupApp(app);
+		await app.init();
+	});
 
-  it('registers without returning the password hash', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(credentials)
-      .expect(201);
+	afterAll(async () => {
+		await app.close();
+	});
 
-    expect(response.body).toEqual({
-      id: expect.any(String),
-      username: credentials.username,
-    });
-  });
+	it("registers without returning the password hash", async () => {
+		const response = await request(app.getHttpServer())
+			.post("/auth/register")
+			.send(credentials)
+			.expect(201);
 
-  it('rejects creating an auction without a token', async () => {
-    await request(app.getHttpServer())
-      .post('/auctions')
-      .send({ title: 'Lamp', description: 'Old lamp', startingPrice: 10 })
-      .expect(401);
-  });
+		expect(response.body).toEqual({
+			id: expect.any(String),
+			username: credentials.username,
+		});
+	});
 
-  it('creates an auction after login and lists it', async () => {
-    const login = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send(credentials)
-      .expect(201);
-    const token = (login.body as { access_token: string }).access_token;
+	it("rejects creating an auction without a token", async () => {
+		await request(app.getHttpServer())
+			.post("/auctions")
+			.send({ title: "Lamp", description: "Old lamp", startingPrice: 10 })
+			.expect(401);
+	});
 
-    const created = await request(app.getHttpServer())
-      .post('/auctions')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ title: 'Lamp', description: 'Old lamp', startingPrice: 10 })
-      .expect(201);
+	it("creates an auction after login and lists it", async () => {
+		const login = await request(app.getHttpServer())
+			.post("/auth/login")
+			.send(credentials)
+			.expect(201);
+		const token = (login.body as { access_token: string }).access_token;
 
-    const auctionId = (created.body as { id: string }).id;
-    const found = await request(app.getHttpServer())
-      .get(`/auctions/${auctionId}`)
-      .expect(200);
+		const created = await request(app.getHttpServer())
+			.post("/auctions")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ title: "Lamp", description: "Old lamp", startingPrice: 10 })
+			.expect(201);
 
-    expect(found.body).toMatchObject({
-      title: 'Lamp',
-      startingPrice: 10,
-      seller: { username: credentials.username },
-    });
-  });
+		const auctionId = (created.body as { id: string }).id;
+		const found = await request(app.getHttpServer()).get(`/auctions/${auctionId}`).expect(200);
+
+		expect(found.body).toMatchObject({
+			title: "Lamp",
+			startingPrice: 10,
+			seller: { username: credentials.username },
+		});
+	});
 });

@@ -1,12 +1,12 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose } from "class-transformer";
 
 export class UserResponseDto {
-  @Expose()
-  id!: string;
+	@Expose()
+	id!: string;
 
-  @Expose()
-  username!: string;
+	@Expose()
+	username!: string;
 
-  @Exclude()
-  passwordHash!: string;
+	@Exclude()
+	passwordHash!: string;
 }
