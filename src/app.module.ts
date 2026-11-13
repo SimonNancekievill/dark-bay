@@ -25,11 +25,6 @@ import { UsersModule } from "./users/users.module";
 				entities: [Auction, Offer, User],
 				synchronize: true,
 				logging: false,
-				enableWAL: true,
-				statementCacheSize: 100,
-				// prepareDatabase: (db) => {
-				//   db.pragma('foreign_keys = ON');
-				// },
 			}),
 		}),
 		AuctionsModule,
