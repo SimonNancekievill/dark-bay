@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "username": "newuser",
+        "username": "newuser1",
         "password": "ichBin3inHase"
       }
   auth: inherit
