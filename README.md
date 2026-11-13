@@ -6,7 +6,7 @@ NestJS API for auctions, offers and users, with Postgres (TypeORM) and JWT login
 
 - Node 24 (see `.nvmrc`)
 - pnpm (`brew install pnpm`)
-- A Postgres database
+- Docker, for the local Postgres database (or any other Postgres)
 
 ## Setup
 
@@ -15,7 +15,17 @@ pnpm install
 cp .env.example .env
 ```
 
-Set `POSTGRES_URL` and `JWT_SECRET` in `.env`. The tables are created on start (`synchronize: true`), and `pnpm db:seed` fills them with sample data.
+`.env.example` already points to the local Docker database below. For another Postgres, change `POSTGRES_URL` in `.env`. The tables are created on start (`synchronize: true`), and `pnpm db:seed` fills them with sample data.
+
+## Database
+
+Create and start a local Postgres once (port 5433, so it doesn't clash with other Postgres instances on 5432):
+
+```bash
+docker run -d --name dark-bay-db -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=dark-bay -p 5433:5432 -v dark-bay-db:/var/lib/postgresql postgres:18
+```
+
+Later, start and stop it with `docker start dark-bay-db` and `docker stop dark-bay-db`. To delete it with all data: `docker rm -f dark-bay-db && docker volume rm dark-bay-db`.
 
 ## Run
 
