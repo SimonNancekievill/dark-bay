@@ -1,7 +1,8 @@
 import { Expose, Type } from "class-transformer";
 
+import { PaginationMetaResponseDto } from "@/common/dtos/paginationMetaResponse.dto";
+
 import { AuctionResponseDto } from "./auctionResponse.dto";
-import { PaginationMetaResponseDto } from "../../common/dtos/paginationMetaResponse.dto";
 
 export class PaginatedAuctionsResponseDto {
 	@Expose()

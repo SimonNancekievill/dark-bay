@@ -1,8 +1,9 @@
+import { Auction } from "@/auctions/entities/auction.entity";
+import { Offer } from "@/offers/entities/offer.entity";
+import { User } from "@/users/entities/user.entity";
+
 import { AppDataSource } from "./data-source";
 import { auctionsData, getUsersData, offersData } from "./seed-data";
-import { Auction } from "../auctions/entities/auction.entity";
-import { Offer } from "../offers/entities/offer.entity";
-import { User } from "../users/entities/user.entity";
 
 (async () => {
 	const ds = await AppDataSource.initialize();

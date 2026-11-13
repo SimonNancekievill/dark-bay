@@ -2,10 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
+import { Auction } from "@/auctions/entities/auction.entity";
+import { User } from "@/users/entities/user.entity";
+
 import { CreateOfferDto } from "./dtos/createOffer.dto";
 import { Offer } from "./entities/offer.entity";
-import { Auction } from "../auctions/entities/auction.entity";
-import { User } from "../users/entities/user.entity";
 
 const ONE_HOUR_IN_MS = 60 * 60 * 1000;
 

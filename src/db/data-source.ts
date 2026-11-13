@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 
-import { Auction } from "../auctions/entities/auction.entity";
-import { Offer } from "../offers/entities/offer.entity";
+import { Auction } from "@/auctions/entities/auction.entity";
+import { Offer } from "@/offers/entities/offer.entity";
 import "dotenv/config";
-import { User } from "../users/entities/user.entity";
+import { User } from "@/users/entities/user.entity";
 
 export const AppDataSource = new DataSource({
 	type: "postgres",

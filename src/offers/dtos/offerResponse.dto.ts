@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-import { UserResponseDto } from "../../users/dtos/userResponse.dto";
+import { UserResponseDto } from "@/users/dtos/userResponse.dto";
 
 export class OfferResponseDto {
 	@Expose()

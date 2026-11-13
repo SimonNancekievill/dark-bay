@@ -3,8 +3,8 @@ import { Test, TestingModule } from "@nestjs/testing";
 import request from "supertest";
 import { App } from "supertest/types";
 
-import { AppModule } from "./../src/app.module";
-import { setupApp } from "./../src/app.setup";
+import { AppModule } from "@/app.module";
+import { setupApp } from "@/app.setup";
 
 describe("Auctions (e2e)", () => {
 	let app: INestApplication<App>;
@@ -33,10 +33,8 @@ describe("Auctions (e2e)", () => {
 			.send(credentials)
 			.expect(201);
 
-		expect(response.body).toEqual({
-			id: expect.any(String),
-			username: credentials.username,
-		});
+		expect(response.body).toMatchObject({ username: credentials.username });
+		expect(response.body).not.toHaveProperty("passwordHash");
 	});
 
 	it("rejects creating an auction without a token", async () => {

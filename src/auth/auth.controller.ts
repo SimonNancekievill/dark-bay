@@ -1,13 +1,14 @@
 import { Body, Controller, Get, Post, Request, SerializeOptions, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 
+import { Public } from "@/common/decorators/public.decorator";
+import { CreateUserDto } from "@/users/dtos/createUser.dto";
+import { UserResponseDto } from "@/users/dtos/userResponse.dto";
+import { UsersService } from "@/users/users.service";
+
 import { AuthService } from "./auth.service";
 import { LoginDto } from "./dtos/login.dto";
 import type { AuthenticatedRequest } from "./login.type";
-import { Public } from "../common/decorators/public.decorator";
-import { CreateUserDto } from "../users/dtos/createUser.dto";
-import { UserResponseDto } from "../users/dtos/userResponse.dto";
-import { UsersService } from "../users/users.service";
 
 @Controller("auth")
 export class AuthController {

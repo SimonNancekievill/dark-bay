@@ -8,8 +8,9 @@ import {
 	Request,
 } from "@nestjs/common";
 
+import type { AuthenticatedRequest } from "@/auth/login.type";
+
 import { OffersService } from "./offers.service";
-import type { AuthenticatedRequest } from "../auth/login.type";
 
 @Controller("offers")
 export class OffersController {

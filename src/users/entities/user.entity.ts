@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-import { Auction } from "../../auctions/entities/auction.entity";
-import { Offer } from "../../offers/entities/offer.entity";
+import { Auction } from "@/auctions/entities/auction.entity";
+import { Offer } from "@/offers/entities/offer.entity";
 
 @Entity("users")
 export class User {

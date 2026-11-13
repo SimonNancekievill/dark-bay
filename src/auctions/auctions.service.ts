@@ -2,12 +2,13 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { InjectRepository } from "@nestjs/typeorm";
 import { Between, LessThan, LessThanOrEqual, MoreThanOrEqual, Repository } from "typeorm";
 
+import { PaginationMetaResponseDto } from "@/common/dtos/paginationMetaResponse.dto";
+import { PaginationQueryDto } from "@/common/dtos/paginationQuery.dto";
+import { User } from "@/users/entities/user.entity";
+
 import { CreateAuctionDto } from "./dtos/createAuction.dto";
 import { UpdateAuctionDto } from "./dtos/updateAuction.dto";
 import { Auction } from "./entities/auction.entity";
-import { PaginationMetaResponseDto } from "../common/dtos/paginationMetaResponse.dto";
-import { PaginationQueryDto } from "../common/dtos/paginationQuery.dto";
-import { User } from "../users/entities/user.entity";
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 const THREE_DAYS_IN_MS = 3 * ONE_DAY_IN_MS;

@@ -14,17 +14,18 @@ import {
 	SerializeOptions,
 } from "@nestjs/common";
 
+import type { AuthenticatedRequest } from "@/auth/login.type";
+import { Public } from "@/common/decorators/public.decorator";
+import { PaginationQueryDto } from "@/common/dtos/paginationQuery.dto";
+import { CreateOfferDto } from "@/offers/dtos/createOffer.dto";
+import { OfferResponseDto } from "@/offers/dtos/offerResponse.dto";
+import { OffersService } from "@/offers/offers.service";
+
 import { AuctionsService } from "./auctions.service";
 import { AuctionResponseDto } from "./dtos/auctionResponse.dto";
 import { CreateAuctionDto } from "./dtos/createAuction.dto";
 import { PaginatedAuctionsResponseDto } from "./dtos/paginatedAuctionsResponse.dto";
-import type { AuthenticatedRequest } from "../auth/login.type";
 import { UpdateAuctionDto } from "./dtos/updateAuction.dto";
-import { Public } from "../common/decorators/public.decorator";
-import { PaginationQueryDto } from "../common/dtos/paginationQuery.dto";
-import { CreateOfferDto } from "../offers/dtos/createOffer.dto";
-import { OfferResponseDto } from "../offers/dtos/offerResponse.dto";
-import { OffersService } from "../offers/offers.service";
 
 @Controller("auctions")
 export class AuctionsController {

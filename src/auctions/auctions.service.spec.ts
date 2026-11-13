@@ -2,9 +2,10 @@ import { ConflictException, NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 
+import { User } from "@/users/entities/user.entity";
+
 import { AuctionsService } from "./auctions.service";
 import { Auction } from "./entities/auction.entity";
-import { User } from "../users/entities/user.entity";
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
